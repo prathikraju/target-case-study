@@ -1,3 +1,5 @@
+-- Target Case Study - E-commerce Analysis'
+
 CREATE DATABASE IF NOT EXISTS target;
 USE target;
 
@@ -142,12 +144,9 @@ UNION ALL
 SELECT 'geolocation', COUNT(*) FROM geolocation;
 
 
-
 USE target;
 
--- ============================================================
 -- Q1: Import the dataset and do usual exploratory analysis
--- ============================================================
 
 -- Q1.1: Data type of all columns in the "customers" table
 SELECT column_name, data_type
@@ -173,9 +172,7 @@ LEFT JOIN orders AS Ord
 WHERE Ord.order_id IS NOT NULL;
 
 
--- ============================================================
 -- Q2: In-depth Exploration
--- ============================================================
 
 -- Q2.1: Is there a growing trend in the no. of orders placed over the past years?
 -- (Yes - total orders placed increased from 2016 to 2018)
@@ -213,9 +210,7 @@ GROUP BY time_slot
 ORDER BY time_slot;
 
 
--- ============================================================
 -- Q3: Evolution of E-commerce orders in the Brazil region
--- ============================================================
 
 -- Q3.1: Get the month on month no. of orders placed in each state
 SELECT
@@ -242,9 +237,7 @@ GROUP BY Cust.customer_state
 ORDER BY Total_customers DESC, Cust.customer_state;
 
 
--- ============================================================
 -- Q4: Impact on Economy - money movement via order prices, freight, etc.
--- ============================================================
 
 -- Q4.1: Get the % increase in the cost of orders from 2017 to 2018 (Jan-Aug only)
 -- Uses "payment_value" column from the payments table
@@ -294,9 +287,7 @@ GROUP BY C.customer_state
 ORDER BY C.customer_state;
 
 
--- ============================================================
 -- Q5: Analysis based on sales, freight and delivery time
--- ============================================================
 
 -- Q5.1: Find the no. of days taken to deliver each order (delivery time),
 -- and the difference (in days) between estimated & actual delivery date
@@ -380,9 +371,7 @@ ORDER BY avg_delivery_speed ASC
 LIMIT 5;
 
 
--- ============================================================
 -- Q6: Analysis based on the payments
--- ============================================================
 
 -- Q6.1: Find the month on month no. of orders placed using different payment types
 SELECT
@@ -392,10 +381,7 @@ SELECT
     COUNT(*) AS num_orders
 FROM orders o
 JOIN payments p ON o.order_id = p.order_id
-GROUP BY 
-	EXTRACT(YEAR FROM o.order_purchase_timestamp),
-    EXTRACT(MONTH FROM o.order_purchase_timestamp), 
-    p.payment_type
+GROUP BY year, month, p.payment_type
 ORDER BY year, month, p.payment_type;
 
 
@@ -405,4 +391,3 @@ SELECT
 FROM payments
 WHERE payment_installments = 1
   AND payment_value > 0;
-
